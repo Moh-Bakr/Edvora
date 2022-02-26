@@ -83,3 +83,8 @@ async def update_lead(
 ):
     await _services.update_Pokemon(pokemon_id, pokemon, user, db)
     return {"message", "Successfully Updated"}
+
+
+@app.get("/api")
+async def root():
+    return {"message": "Favorite Pokemons Manager"}
