@@ -6,6 +6,7 @@ import jwt as _jwt
 import sqlalchemy.orm as _orm
 import passlib.hash as _hash
 import models as _models, schemas as _schemas
+import datetime as _dt
 
 oauth2schema = _security.OAuth2PasswordBearer(tokenUrl="/api/token")
 
@@ -65,5 +66,57 @@ async def get_current_user(
         raise _fastapi.HTTPException(
             status_code=401, detail="Invalid Email or Password"
         )
-
     return _schemas.User.from_orm(user)
+
+
+async def create_Pokemon(user: _schemas.User, db: _orm.Session, pokemon: _schemas.PokemonCreate):
+    pokemon = _models.Pokemon(**pokemon.dict(), owner_id=user.id)
+    db.add(pokemon)
+    db.commit()
+    db.refresh(pokemon)
+    return _schemas.Pokemon.from_orm(pokemon)
+
+
+async def get_Pokemons(user: _schemas.User, db: _orm.Session):
+    pokemons = db.query(_models.Pokemon).filter_by(owner_id=user.id)
+
+    return list(map(_schemas.Pokemon.from_orm, pokemons))
+
+
+async def _pokemon_selector(pokemon_id: int, user: _schemas.User, db: _orm.Session):
+    pokemon = (
+        db.query(_models.Pokemon)
+            .filter_by(owner_id=user.id)
+            .filter(_models.Pokemon.id == pokemon_id)
+            .first()
+    )
+    if pokemon is None:
+        raise _fastapi.HTTPException(status_code=404, detail="Pokemon does not exist")
+    return pokemon
+
+
+async def get_Pokemon(pokemon_id: int, user: _schemas.User, db: _orm.Session):
+    lead = await _pokemon_selector(pokemon_id=pokemon_id, user=user, db=db)
+
+    return _schemas.Pokemon.from_orm(lead)
+
+
+async def delete_Pokemon(pokemon_id: int, user: _schemas.User, db: _orm.Session):
+    lead = await _pokemon_selector(pokemon_id, user, db)
+
+    db.delete(lead)
+    db.commit()
+
+
+async def update_Pokemon(pokemon_id: int, pokemon: _schemas.PokemonCreate, user: _schemas.User, db: _orm.Session):
+    pokemon_db = await _pokemon_selector(pokemon_id, user, db)
+
+    pokemon_db.fav_pokemon = pokemon.fav_pokemon
+    pokemon_db.last_name = pokemon.pit_name
+    pokemon_db.note = pokemon.note
+    pokemon_db.date_last_updated = _dt.datetime.utcnow()
+
+    db.commit()
+    db.refresh(pokemon_db)
+
+    return _schemas.Pokemon.from_orm(pokemon_db)
