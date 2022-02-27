@@ -22,6 +22,7 @@ class User(_UserBase):
 
 class _PokemonBase(_pydantic.BaseModel):
     fav_pokemon: str
+    fav_id: int
     pit_name: str
     note: str
 

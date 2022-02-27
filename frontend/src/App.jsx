@@ -3,6 +3,8 @@ import Header from "./components/Header";
 import {UserContext} from "./context/UserContext";
 import Register from "./components/Register";
 import Login from "./components/Login";
+import Table from "./components/Table";
+import Home from "./components/Home";
 
 
 const App = () => {
@@ -41,7 +43,8 @@ const App = () => {
                             <Register/> <Login/>
                         </div>
                     ) : (
-                        <p>Table</p>
+                        // <Table/>
+                        <Home/>
                     )}
                 </div>
                 <div className="column"></div>

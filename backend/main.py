@@ -64,13 +64,13 @@ async def get_pokemon(
     return await _services.get_Pokemon(pokemon_id, user, db)
 
 
-@app.delete("/api/pokemons/{pokemon_id}", status_code=204)
+@app.delete("/api/pokemons/{fav_id}", status_code=204)
 async def delete_lead(
-        pokemon_id: int,
+        fav_id: int,
         user: _schemas.User = _fastapi.Depends(_services.get_current_user),
         db: _orm.Session = _fastapi.Depends(_services.get_db),
 ):
-    await _services.delete_Pokemon(pokemon_id, user, db)
+    await _services.delete_Pokemon(fav_id, user, db)
     return {"message", "Successfully Deleted"}
 
 

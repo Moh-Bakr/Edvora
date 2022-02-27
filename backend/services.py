@@ -95,14 +95,27 @@ async def _pokemon_selector(pokemon_id: int, user: _schemas.User, db: _orm.Sessi
     return pokemon
 
 
+async def _pokemon_selectorsss(fav_id: int, user: _schemas.User, db: _orm.Session):
+    pokemon = (
+        db.query(_models.Pokemon)
+            .filter_by(owner_id=user.id)
+            .filter(_models.Pokemon.fav_id == fav_id)
+            .first()
+    )
+
+    if pokemon is None:
+        raise _fastapi.HTTPException(status_code=404, detail="Pokemon does not exist")
+    return pokemon
+
+
 async def get_Pokemon(pokemon_id: int, user: _schemas.User, db: _orm.Session):
     lead = await _pokemon_selector(pokemon_id=pokemon_id, user=user, db=db)
 
     return _schemas.Pokemon.from_orm(lead)
 
 
-async def delete_Pokemon(pokemon_id: int, user: _schemas.User, db: _orm.Session):
-    lead = await _pokemon_selector(pokemon_id, user, db)
+async def delete_Pokemon(fav_id: int, user: _schemas.User, db: _orm.Session):
+    lead = await _pokemon_selectorsss(fav_id, user, db)
 
     db.delete(lead)
     db.commit()
