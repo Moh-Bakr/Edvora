@@ -2,8 +2,7 @@ import React, {useEffect, useState} from "react";
 
 const PokemonModel = ({active, handleModal, token, id, setErrorMessage}) => {
     const [fav_pokemon, setfav_pokemon] = useState("");
-    const [pit_name, setpit_name] = useState("");
-    const [note, setNote] = useState("");
+    const [url, seturl] = useState("");
 
     useEffect(() => {
         const getPokemon = async () => {
@@ -21,8 +20,7 @@ const PokemonModel = ({active, handleModal, token, id, setErrorMessage}) => {
             } else {
                 const data = await response.json();
                 setfav_pokemon(data.fav_pokemon);
-                setpit_name(data.pit_name);
-                setNote(data.note);
+                seturl(data.url);
             }
         };
 
@@ -33,8 +31,7 @@ const PokemonModel = ({active, handleModal, token, id, setErrorMessage}) => {
 
     const cleanFormData = () => {
         setfav_pokemon("");
-        setpit_name("");
-        setNote("");
+        seturl("");
     };
 
     const handleCreatePokemon = async (e) => {
@@ -47,8 +44,7 @@ const PokemonModel = ({active, handleModal, token, id, setErrorMessage}) => {
             },
             body: JSON.stringify({
                 fav_pokemon: fav_pokemon,
-                pit_name: pit_name,
-                note: note,
+                url: url,
             }),
         };
         const response = await fetch("/api/Pokemons", requestOptions);
@@ -70,8 +66,7 @@ const PokemonModel = ({active, handleModal, token, id, setErrorMessage}) => {
             },
             body: JSON.stringify({
                 fav_pokemon: fav_pokemon,
-                pit_name: pit_name,
-                note: note,
+                url: url,
             }),
         };
         const response = await fetch(`/api/pokemons/${id}`, requestOptions);
@@ -108,27 +103,15 @@ const PokemonModel = ({active, handleModal, token, id, setErrorMessage}) => {
                             </div>
                         </div>
                         <div className="field">
-                            <label className="label">Last Name</label>
+                            <label className="label">URL</label>
                             <div className="control">
                                 <input
                                     type="text"
-                                    placeholder="Enter pit name"
-                                    value={pit_name}
-                                    onChange={(e) => setpit_name(e.target.value)}
+                                    placeholder="Enter Url name"
+                                    value={url}
+                                    onChange={(e) => seturl(e.target.value)}
                                     className="input"
                                     required
-                                />
-                            </div>
-                        </div>
-                        <div className="field">
-                            <label className="label">Note</label>
-                            <div className="control">
-                                <input
-                                    type="text"
-                                    placeholder="Enter note"
-                                    value={note}
-                                    onChange={(e) => setNote(e.target.value)}
-                                    className="input"
                                 />
                             </div>
                         </div>

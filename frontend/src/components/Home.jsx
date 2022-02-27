@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
 import moment from "moment";
-
 import ErrorMessage from "./ErrorMessage";
 import {UserContext} from "../context/UserContext";
 import PokemonModal from "./PokemonModal";
@@ -13,11 +12,6 @@ const Home = () => {
     const [activeModal, setActiveModal] = useState(false);
     const [id, setId] = useState(null);
 
-    // const handleUpdate = async (id) => {
-    //     setId(id);
-    //     setActiveModal(true);
-    // };
-    //
     const handleDelete = async (id) => {
         const requestOptions = {
             method: "DELETE",
@@ -31,10 +25,10 @@ const Home = () => {
             setErrorMessage("Failed to delete lead");
         }
 
-        getPokemons();
+        getPokemon();
     };
 
-    const getPokemons = async () => {
+    const getPokemon = async () => {
         const requestOptions = {
             method: "GET",
             headers: {
@@ -53,12 +47,12 @@ const Home = () => {
     };
 
     useEffect(() => {
-        getPokemons();
+        getPokemon();
     }, []);
 
     const handleModal = () => {
         setActiveModal(!activeModal);
-        getPokemons();
+        getPokemon();
         setId(null);
     };
 
@@ -72,7 +66,7 @@ const Home = () => {
                 setErrorMessage={setErrorMessage}
             />
             <button
-                className="button is-fullwidth mb-5 is-primary">
+                className="button is-fullwidth mb-5 is-success">
                 Favorite Pokemons
             </button>
             <ErrorMessage message={errorMessage}/>
@@ -81,9 +75,7 @@ const Home = () => {
                     <thead>
                     <tr>
                         <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Company</th>
-                        {/*<th>Email</th>*/}
+                        <th>URL</th>
                         <th>Added</th>
                         <th>Actions</th>
                     </tr>
@@ -92,17 +84,9 @@ const Home = () => {
                     {pokemons.map((pokemon) => (
                         <tr key={pokemon.id}>
                             <td>{pokemon.fav_pokemon}</td>
-                            <td>{pokemon.pit_name}</td>
-                            <td>{pokemon.note}</td>
-                            {/*<td>{pokemon.fav_id}</td>*/}
+                            <td>{pokemon.url}</td>
                             <td>{moment(pokemon.date_last_updated).format("MMM Do YY")}</td>
                             <td>
-                                {/*<button*/}
-                                {/*    className="button mr-2 is-info is-light"*/}
-                                {/*    onClick={() => handleUpdate(pokemon.id)}*/}
-                                {/*>*/}
-                                {/*    Update*/}
-                                {/*</button>*/}
                                 <button
                                     className="button mr-2 is-danger is-light"
                                     onClick={() => handleDelete(pokemon.fav_id)}

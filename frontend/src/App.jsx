@@ -10,7 +10,7 @@ import Home from "./components/Home";
 const App = () => {
     const [message, setMessage] = useState("");
     const [token] = useContext(UserContext);
-
+    let Showfav = true;
 
     const getWelcomeMessage = async () => {
         const requestOptions = {
@@ -28,7 +28,10 @@ const App = () => {
             setMessage(data.message);
         }
     };
-
+    const show = () => {
+        console.log(Showfav);
+        Showfav = !Showfav;
+    }
     useEffect(() => {
         getWelcomeMessage();
     }, []);
@@ -39,13 +42,14 @@ const App = () => {
                 <div className="column"></div>
                 <div className="column m-5 is-two-thirds">
                     {!token ? (
-                        <div className="columns">
-                            <Register/> <Login/>
+                            <div className="columns">
+                                <Register/> <Login/>
+                            </div>
+                        ) :
+                        <div>
+                            <Home/><Table/>
                         </div>
-                    ) : (
-                        // <Table/>
-                        <Home/>
-                    )}
+                    }
                 </div>
                 <div className="column"></div>
             </div>

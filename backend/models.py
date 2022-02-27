@@ -18,22 +18,12 @@ class User(_database.Base):
         return _hash.bcrypt.verify(password, self.hashed_password)
 
 
-# class Pokemon(_database.Base):
-#     __tablename__ = "pokemons"
-#     id = _sql.Column(_sql.Integer, primary_key=True, index=True)
-#     owner_id = _sql.Column(_sql.Integer, _sql.ForeignKey("users.id"))
-#     fav_pokemon = _sql.Column(_sql.String, index=True)
-#     fav_id = _sql.Column(_sql.Integer, default="")
-#
-#     owner = _orm.relationship("User", back_populates="pokemons")
-
 class Pokemon(_database.Base):
     __tablename__ = "pokemons"
     id = _sql.Column(_sql.Integer, primary_key=True, index=True)
     owner_id = _sql.Column(_sql.Integer, _sql.ForeignKey("users.id"))
     fav_pokemon = _sql.Column(_sql.String, index=True)
-    pit_name = _sql.Column(_sql.String, index=True)
-    note = _sql.Column(_sql.String, default="")
+    url = _sql.Column(_sql.String, default="")
     fav_id = _sql.Column(_sql.Integer, default="")
 
     date_created = _sql.Column(_sql.DateTime, default=_dt.datetime.utcnow)

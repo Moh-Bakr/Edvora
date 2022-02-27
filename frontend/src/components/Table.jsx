@@ -1,13 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
-import {Link} from 'react-router-dom';
-import { BrowserRouter as Router, Switch,
-    Route, Redirect,} from "react-router-dom";
-
-import moment from "moment";
-
 import ErrorMessage from "./ErrorMessage";
 import SuccessMessage from "./SuccessMessage";
-import PokemonModal from "./PokemonModal";
 import {UserContext} from "../context/UserContext";
 
 const Table = () => {
@@ -17,7 +10,7 @@ const Table = () => {
     const [successMessage, setSuccessMessage] = useState("");
     const [loaded, setLoaded] = useState(false);
 
-    const addtofav = async (name, id) => {
+    const addtofav = async (name, id, url) => {
         const requestOptions = {
             method: "POST",
             headers: {
@@ -27,9 +20,7 @@ const Table = () => {
             body: JSON.stringify({
                 fav_pokemon: name,
                 fav_id: id,
-                pit_name: "sss",
-                note: "sssss",
-
+                url: url,
             }),
         };
         const response = await fetch("/api/Pokemons", requestOptions);
@@ -83,35 +74,30 @@ const Table = () => {
         <>
             <ErrorMessage message={errorMessage}/>
             <SuccessMessage message={successMessage}/>
+            <button
+                className="button is-fullwidth mb-5 is-black">
+                Pokemons List
+            </button>
             {loaded && pokemons ? (
                 <table className="table is-fullwidth">
                     <thead>
                     <tr>
                         <th> Pokemon</th>
-                        <th>id</th>
+                        <th>Url</th>
                         <th>Actions</th>
-
                     </tr>
                     </thead>
                     <tbody>
                     {pokemons.results.map((pokemon, id) => (
                         <tr key={pokemon.id}>
                             <td>{pokemon.name}</td>
-                            <td>{id}</td>
+                            <td>{pokemon.url}</td>
                             <td>
                                 <button
                                     className="button mr-2 is-info is-light"
-                                    onClick={() => addtofav(pokemon.name, id)}
-                                >
+                                    onClick={() => addtofav(pokemon.name, id,pokemon.url)}>
                                     Add favorite
                                 </button>
-                                <button
-                                    className="button mr-2 is-danger is-light"
-                                    onClick={() => removefromfav(id)}
-                                >
-                                    Remove favorite
-                                </button>
-
                             </td>
                         </tr>
                     ))}

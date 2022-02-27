@@ -125,8 +125,7 @@ async def update_Pokemon(pokemon_id: int, pokemon: _schemas.PokemonCreate, user:
     pokemon_db = await _pokemon_selector(pokemon_id, user, db)
 
     pokemon_db.fav_pokemon = pokemon.fav_pokemon
-    pokemon_db.last_name = pokemon.pit_name
-    pokemon_db.note = pokemon.note
+    pokemon_db.url = pokemon.url
     pokemon_db.date_last_updated = _dt.datetime.utcnow()
 
     db.commit()
