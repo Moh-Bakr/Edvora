@@ -3,7 +3,7 @@ import ErrorMessage from "./ErrorMessage";
 import SuccessMessage from "./SuccessMessage";
 import {UserContext} from "../context/UserContext";
 
-const Table = () => {
+const PokemonsList = () => {
     const [token] = useContext(UserContext);
     const [pokemons, setPokemons] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
@@ -29,23 +29,6 @@ const Table = () => {
         } else {
             setSuccessMessage("added successfully to the favorite")
         }
-    };
-
-
-    const removefromfav = async (id) => {
-        const requestOptions = {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
-            },
-        };
-        const response = await fetch(`/api/pokemons/${id}`, requestOptions);
-        if (!response.ok) {
-            setErrorMessage("Failed to delete pokemons");
-        }
-
-        getPokemons();
     };
 
     const getPokemons = async () => {
@@ -95,8 +78,8 @@ const Table = () => {
                             <td>
                                 <button
                                     className="button mr-2 is-info is-light"
-                                    onClick={() => addtofav(pokemon.name, id,pokemon.url)}>
-                                    Add favorite
+                                    onClick={() => addtofav(pokemon.name, id, pokemon.url)}>
+                                    Add Favorite
                                 </button>
                             </td>
                         </tr>
@@ -110,4 +93,4 @@ const Table = () => {
     );
 };
 
-export default Table;
+export default PokemonsList;

@@ -1,8 +1,7 @@
 import React, {useContext} from "react";
 
 import {UserContext} from "../context/UserContext";
-import { BrowserRouter as Router, Switch,
-    Route, Redirect,} from "react-router-dom";
+
 const Header = ({title}) => {
     const [token, setToken] = useContext(UserContext);
 

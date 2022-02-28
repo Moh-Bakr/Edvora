@@ -3,8 +3,17 @@ import fastapi.security as _security
 import sqlalchemy.orm as _orm
 import services as _services, schemas as _schemas
 from typing import List
+from fastapi.middleware.cors import CORSMiddleware
 
 app = _fastapi.FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.post("/api/users")

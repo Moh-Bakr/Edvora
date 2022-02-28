@@ -3,8 +3,8 @@ import Header from "./components/Header";
 import {UserContext} from "./context/UserContext";
 import Register from "./components/Register";
 import Login from "./components/Login";
-import Table from "./components/Table";
-import Home from "./components/Home";
+import PokemonsList from "./components/PokemonsList";
+import FavList from "./components/FavList";
 
 
 const App = () => {
@@ -47,7 +47,7 @@ const App = () => {
                             </div>
                         ) :
                         <div>
-                            <Home/><Table/>
+                            <FavList/><PokemonsList/>
                         </div>
                     }
                 </div>
